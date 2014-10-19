@@ -77,7 +77,7 @@ reg [4:0] state ;
 
 assign Execution_enabled = Debug_Run || ((Debug_Mode==`istep)&&(state!=`StFetch2)) || ((Debug_Mode==`mstep)&&(Read==0)&&(Write==0)) ;
 assign Debug_PC_Load_En = Execution_enabled && PC_Load_En ;
-assign ALU_En = ((state==`StExecInst)&&(IR_Group==`GroupInternal)) || (state==`StExecData);
+assign ALU_En = ((state==`StExecInst)&&(IR_Group==`GroupInternal)) || (state==`StExecData) || (state==`Pop1);
 assign Debug_ALU_En = Execution_enabled && ALU_En;
 
 assign IR_Group = IR[7:4] ;
