@@ -41,7 +41,7 @@ wire [7:0] IBH ;
 wire [7:0] IR ;
 wire [3:0] ALU_Cmd ;
 
-EPMP_STACK EPMP_STACK_inst(
+EPMP_AUXR EPMP_AUXR_inst(
 	.clk(clk), 
 	.AuxR_Load_En(AuxR_Load_En), 
 	.AuxR_Out_En(AuxR_Out_En), 
@@ -50,7 +50,7 @@ EPMP_STACK EPMP_STACK_inst(
 	.Debug_AUX_R(Debug_AUX_R)
 	);
 
-EPMP_AUXR EPMP_AUXR_inst(
+EPMP_STACK EPMP_STACK_inst(
 	.clk(clk),	
 	.Reset(Reset), 
 	.Pop_Stack(Pop_Stack), 
