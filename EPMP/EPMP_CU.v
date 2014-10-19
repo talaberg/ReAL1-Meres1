@@ -18,7 +18,7 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module EPMP_CU(Reset, C, clk, IR, ALU_Cmd, PC_Out_En, Debug_PC_Load_En, PC_Load_En, PC_Inc_nLoad, IR_Load, Debug_ALU_En, ALU_En, ACC_Out_En, MAR_Load, Read, Write, MDR_XB_Load, MDR_IB_Load, MDR_XB_En, MDR_IB_En, AuxR_Load_En, AuxR_Out_En,Debug_Run,Debug_Mode,Debug_State);
+module EPMP_CU(Reset, C, clk, IR, ALU_Cmd, PC_Out_En, Debug_PC_Load_En, PC_Load_En, PC_Inc_nLoad, IR_Load, Debug_ALU_En, ALU_En, ACC_Out_En, MAR_Load, Read, Write, MDR_XB_Load, MDR_IB_Load, MDR_XB_En, MDR_IB_En, AuxR_Load_En, AuxR_Out_En,Debug_Run,Debug_Mode,Push_Stack,Pop_Stack,Debug_State);
     input Reset;
     input C;
     input clk;
@@ -43,6 +43,8 @@ module EPMP_CU(Reset, C, clk, IR, ALU_Cmd, PC_Out_En, Debug_PC_Load_En, PC_Load_
     output MDR_IB_En;
     output AuxR_Load_En;
     output AuxR_Out_En;
+	output Push_Stack;
+	output Pop_Stack;
     output [4:0] Debug_State;
 
 wire [3:0] IR_Group;
@@ -54,9 +56,12 @@ reg [4:0] state ;
 `define	GroupStore 1
 `define	GroupInternal 2
 `define	GroupJump 3
+`define	GroupPushPop 4
 
 // Definitions for sub-codes
 `define	InstCJump 1
+`define	Pop 1
+`define	Push 2
 
 // Outputs of CU are generated automatic in "State machine plan.xls"
 `include "DefineStates.vh"
@@ -92,6 +97,13 @@ always @ (posedge clk)
 				 state <= `StFetch0 ; // No additional states needed
 			  else if ((IR_Group==`GroupJump) && (IR_Sub==`InstCJump) && !C)
 				 state <= `StJumpNC1 ; // Conditional jump not taken
+			
+			  else if (IR_Sub==`Pop)
+				state <= `StPop1 ;
+				
+			  else if (IR_Sub==`Push)
+				state <= `StPush1 ;
+				
 			  else
 				 state <= state+1 ;
 			  end
@@ -115,6 +127,10 @@ always @ (posedge clk)
 		  `StJump1 : 
 			  state <= `StFetch0 ;
 		  `StJumpNC2 : 
+			  state <= `StFetch0 ;
+		  `StPop1 : 
+			  state <= `StFetch0 ;
+		  `StPush1 : 
 			  state <= `StFetch0 ;
 		  default: // States without decisions, just take the next step
 			 state <= state+1 ;

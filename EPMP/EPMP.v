@@ -41,13 +41,22 @@ wire [7:0] IBH ;
 wire [7:0] IR ;
 wire [3:0] ALU_Cmd ;
 
-EPMP_AUXR EPMP_AUXR_inst(
+EPMP_STACK EPMP_STACK_inst(
 	.clk(clk), 
 	.AuxR_Load_En(AuxR_Load_En), 
 	.AuxR_Out_En(AuxR_Out_En), 
 	.D(D), 
 	.IBH(IBH),
 	.Debug_AUX_R(Debug_AUX_R)
+	);
+
+EPMP_AUXR EPMP_AUXR_inst(
+	.clk(clk),	
+	.Reset(Reset), 
+	.Pop_Stack(Pop_Stack), 
+	.Push_Stack(Push_Stack), 
+	.IBH(C),
+	.IBL(IBL)
 	);
 
 EPMP_ALU EPMP_ALU_inst(
@@ -84,6 +93,8 @@ EPMP_CU EPMP_CU_inst(
 	.MDR_IB_En(MDR_IB_En), 
 	.AuxR_Load_En(AuxR_Load_En), 
 	.AuxR_Out_En(AuxR_Out_En),
+	.Push_Stack(Push_Stack),
+	.Pop_Stack(Pop_Stack),
 	.Debug_Run(Debug_Run),
 	.Debug_Mode(Debug_Mode),
 	.Debug_State(Debug_State)
