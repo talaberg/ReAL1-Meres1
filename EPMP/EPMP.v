@@ -49,7 +49,7 @@ EPMP_AUXR EPMP_AUXR_inst(
 	.IBH(IBH),
 	.Debug_AUX_R(Debug_AUX_R)
 	);
-
+//Hozzáadva --> STACK
 EPMP_STACK EPMP_STACK_inst(
 	.clk(clk),	
 	.Reset(Reset), 
@@ -93,7 +93,7 @@ EPMP_CU EPMP_CU_inst(
 	.MDR_IB_En(MDR_IB_En), 
 	.AuxR_Load_En(AuxR_Load_En), 
 	.AuxR_Out_En(AuxR_Out_En),
-	.Push_Stack(Push_Stack),
+	.Push_Stack(Push_Stack),//Hozzáadva --> Push-Pop jelzés
 	.Pop_Stack(Pop_Stack),
 	.Debug_Run(Debug_Run),
 	.Debug_Mode(Debug_Mode),

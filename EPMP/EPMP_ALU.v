@@ -24,7 +24,7 @@ module EPMP_ALU(clk, Reset, ALU_En, ACC_Out_En, ALU_Cmd, C, ACC_bus,Debug_ACC);
     input ALU_En;
     input ACC_Out_En;
     input [3:0] ALU_Cmd;
-    inout reg C=0;
+    inout reg C=0;//inoutra cserélve
     output [7:0] Debug_ACC ;
     inout [7:0] ACC_bus;
 

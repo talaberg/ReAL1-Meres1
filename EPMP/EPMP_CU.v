@@ -43,7 +43,7 @@ module EPMP_CU(Reset, C, clk, IR, ALU_Cmd, PC_Out_En, Debug_PC_Load_En, PC_Load_
     output MDR_IB_En;
     output AuxR_Load_En;
     output AuxR_Out_En;
-	output Push_Stack;
+	output Push_Stack;//Hozzáadva Push-pop stack
 	output Pop_Stack;
     output [4:0] Debug_State;
 
@@ -98,10 +98,10 @@ always @ (posedge clk)
 			  else if ((IR_Group==`GroupJump) && (IR_Sub==`InstCJump) && !C)
 				 state <= `StJumpNC1 ; // Conditional jump not taken
 			
-			  else if (IR_Sub==`Pop)
+			  else if ((IR_Group==`GroupPushPop) && (IR_Sub==`Pop))//hozzáadva
 				state <= `StPop1 ;
 				
-			  else if (IR_Sub==`Push)
+			  else if ((IR_Group==`GroupPushPop) && (IR_Sub==`Push))//hozzáadva
 				state <= `StPush1 ;
 				
 			  else
@@ -129,9 +129,9 @@ always @ (posedge clk)
 		  `StJumpNC2 : 
 			  state <= `StFetch0 ;
 		  `StPop1 : 
-			  state <= `StFetch0 ;
+			  state <= `StFetch0 ;//hozzáadva
 		  `StPush1 : 
-			  state <= `StFetch0 ;
+			  state <= `StFetch0 ;//hozzáadva
 		  default: // States without decisions, just take the next step
 			 state <= state+1 ;
 		endcase
